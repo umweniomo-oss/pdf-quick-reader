@@ -1,97 +1,94 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#101828" />
-    <meta name="description" content="Create, preview and read PDF documents offline." />
-    <title>PDF Quick Reader</title>
-  </head>
-  <body>
-    <div id="app">
-      <header class="topbar">
-        <div class="brand-mark">PDF</div>
-        <div class="brand-copy">
-          <strong>PDF Quick Reader</strong>
-          <span>Your documents, in one place</span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101828" />
+  <meta name="description" content="Create, preview and read PDF documents offline." />
+  <title>PDF Quick Reader</title>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand-mark">PDF</div>
+    <div class="brand-copy"><strong>PDF Quick Reader</strong><span>Your documents, in one place</span></div>
+    <span class="offline-pill"><i></i> Offline ready</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">YOUR PERSONAL PDF SPACE</p>
+        <h1>Read. Create.<br><span>Keep everything close.</span></h1>
+        <p>Your documents and reading progress, together in one place.</p>
+        <div class="hero-actions">
+          <button id="heroOpen" class="primary" type="button">Open a PDF <span>→</span></button>
+          <button id="heroCreate" class="secondary" type="button">Create PDF</button>
         </div>
-        <span class="offline-pill"><i></i> Offline ready</span>
-      </header>
+      </div>
+      <img class="hero-art" src="./pdf-illustration.png" alt="PDF documents and an open book illustration" />
+    </section>
 
-      <nav class="tabs" aria-label="Main navigation">
-        <button class="tab active" data-page="create" type="button">Create PDF</button>
-        <button class="tab" data-page="reader" type="button">PDF Reader</button>
-      </nav>
+    <section id="homePage" class="page active">
+      <div class="section-heading">
+        <div><p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p><h2>Continue reading</h2></div>
+        <span id="historyCount" class="count-pill">0 files</span>
+      </div>
+      <div id="continueCard" class="continue-card empty-continue">
+        <div class="empty-art">📖</div>
+        <div><strong>Your reading journey starts here</strong><p>Open a PDF and it will appear here with your last page saved.</p></div>
+      </div>
 
-      <main>
-        <section id="createPage" class="page active">
-          <div class="page-heading">
-            <p class="eyebrow">DOCUMENT STUDIO</p>
-            <h1>Create a PDF</h1>
-            <p>Enter your details and generate a document you can preview and save.</p>
-          </div>
+      <div class="section-heading recent-heading">
+        <div><p class="eyebrow">YOUR LIBRARY</p><h2>Recent documents</h2></div>
+        <button id="clearHistory" class="text-button" type="button">Clear history</button>
+      </div>
+      <div id="recentList" class="recent-list">
+        <div class="empty-library"><div class="empty-icon">▤</div><strong>No recent documents yet</strong><span>PDFs you open will be saved here on this device.</span></div>
+      </div>
+    </section>
 
-          <form id="pdfForm" class="panel">
-            <label for="docTitle">Document title</label>
-            <input id="docTitle" name="docTitle" maxlength="100" placeholder="e.g. Meeting Notes" required />
+    <section id="createPage" class="page">
+      <div class="page-heading"><p class="eyebrow">DOCUMENT STUDIO</p><h1>Create a PDF</h1><p>Enter your details and generate a document you can preview and save.</p></div>
+      <form id="pdfForm" class="panel">
+        <label for="docTitle">Document title</label>
+        <input id="docTitle" name="docTitle" maxlength="100" placeholder="e.g. Meeting Notes" required />
+        <label for="docBody">Document content</label>
+        <textarea id="docBody" name="docBody" rows="11" placeholder="Type or paste your document here..." required></textarea>
+        <div class="hint">Your PDF is generated on this device. Your text is not uploaded.</div>
+        <button class="primary full" type="submit">Generate PDF preview <span>→</span></button>
+      </form>
+    </section>
 
-            <label for="docBody">Document content</label>
-            <textarea id="docBody" name="docBody" rows="11" placeholder="Type or paste your document here..." required></textarea>
+    <section id="readerPage" class="page">
+      <div class="page-heading"><p class="eyebrow">YOUR DOCUMENTS</p><h1>PDF Reader</h1><p>Read a PDF, move between pages and save your progress automatically.</p></div>
+      <div class="panel picker-panel">
+        <div class="picker-icon">↥</div>
+        <div class="picker-copy"><strong>Open a PDF file</strong><span>Select a PDF stored on your device.</span></div>
+        <label class="secondary file-button" for="pdfPicker">Choose PDF</label>
+        <input id="pdfPicker" type="file" accept="application/pdf,.pdf" hidden />
+      </div>
+      <div id="emptyReader" class="empty-state"><div class="empty-icon">▤</div><strong>No document open</strong><span>Your PDF preview will appear here.</span></div>
+      <section id="previewPanel" class="preview-panel" hidden>
+        <div class="preview-toolbar">
+          <div class="preview-name"><strong id="previewTitle">Document.pdf</strong><span id="pageCounter">Page 1 of 1</span></div>
+          <div class="zoom-controls"><button id="zoomOut" class="icon-button" type="button" aria-label="Zoom out">−</button><button id="zoomIn" class="icon-button" type="button" aria-label="Zoom in">+</button></div>
+        </div>
+        <div id="pdfViewport" class="pdf-viewport"><canvas id="pdfCanvas"></canvas></div>
+        <div class="page-controls"><button id="prevPage" class="secondary" type="button">Previous</button><button id="nextPage" class="secondary" type="button">Next</button></div>
+        <button id="downloadPdf" class="primary full" type="button">Save / Share PDF</button>
+      </section>
+    </section>
+  </main>
 
-            <div class="hint">Your PDF is generated on this device. Your text is not uploaded.</div>
-            <button class="primary full" type="submit">Generate PDF preview <span>→</span></button>
-          </form>
-        </section>
-
-        <section id="readerPage" class="page">
-          <div class="page-heading">
-            <p class="eyebrow">YOUR DOCUMENTS</p>
-            <h1>PDF Reader</h1>
-            <p>Choose a PDF from your phone or view the document you just created.</p>
-          </div>
-
-          <div class="panel picker-panel">
-            <div class="picker-icon">↥</div>
-            <div class="picker-copy">
-              <strong>Open a PDF file</strong>
-              <span>Select a PDF stored on your device.</span>
-            </div>
-            <label class="secondary file-button" for="pdfPicker">Choose PDF</label>
-            <input id="pdfPicker" type="file" accept="application/pdf,.pdf" hidden />
-          </div>
-
-          <div id="emptyReader" class="empty-state">
-            <div class="empty-icon">▤</div>
-            <strong>No document open</strong>
-            <span>Your PDF preview will appear here.</span>
-          </div>
-
-          <section id="previewPanel" class="preview-panel" hidden>
-            <div class="preview-toolbar">
-              <div class="preview-name">
-                <strong id="previewTitle">Document.pdf</strong>
-                <span id="pageCounter">Page 1 of 1</span>
-              </div>
-              <div class="zoom-controls">
-                <button id="zoomOut" class="icon-button" type="button" aria-label="Zoom out">−</button>
-                <button id="zoomIn" class="icon-button" type="button" aria-label="Zoom in">+</button>
-              </div>
-            </div>
-            <div id="pdfViewport" class="pdf-viewport">
-              <canvas id="pdfCanvas"></canvas>
-            </div>
-            <div class="page-controls">
-              <button id="prevPage" class="secondary" type="button">Previous</button>
-              <button id="nextPage" class="secondary" type="button">Next</button>
-            </div>
-            <button id="downloadPdf" class="primary full" type="button">Save / Share PDF</button>
-          </section>
-        </section>
-      </main>
-
-      <div id="toast" class="toast" role="status" aria-live="polite"></div>
-      <footer>PDF Quick Reader <span>•</span> Files stay on your device</footer>
-    </div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <button class="nav-item active" data-page="home" type="button"><span>⌂</span>Home</button>
+    <button class="nav-item" data-page="create" type="button"><span>＋</span>Create</button>
+    <button class="nav-item" data-page="reader" type="button"><span>▤</span>Reader</button>
+  </nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer>PDF Quick Reader <span>•</span> Files stay on your device</footer>
+</div>
+<script type="module" src="/src/main.js"></script>
+</body>
 </html>
